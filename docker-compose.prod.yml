@@ -38,19 +38,6 @@ services:
       - REDIS_DSN=redis://redis:6379/0
       - HEALTH_HOST=0.0.0.0
       - HEALTH_PORT=8080
-    read_only: true
-    tmpfs:
-      - /tmp:size=64m
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
     security_opt:
       - no-new-privileges:true
       - apparmor=unconfined
