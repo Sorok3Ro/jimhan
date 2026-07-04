@@ -23,14 +23,15 @@ services:
   bot:
     image: pushups-bot:latest
     restart: always
+    user: "1000:1000"
     env_file:
       - .env
     depends_on:
       redis:
         condition: service_healthy
     volumes:
-      - ./pushups.db:/app/pushups.db:rw
-      - ./logs:/app/logs
+      - ./pushups.db:/app/pushups.db:rw,z
+      - ./logs:/app/logs:rw,z
     environment:
       - REDIS_DSN=redis://redis:6379/0
       - HEALTH_HOST=0.0.0.0
@@ -50,6 +51,7 @@ services:
           memory: 512M
     security_opt:
       - no-new-privileges:true
+      - apparmor=unconfined
 
 volumes:
   redis_data:

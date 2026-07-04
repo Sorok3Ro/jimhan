@@ -24,8 +24,8 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./pushups.db:/app/pushups.db
-      - ./logs:/app/logs
+      - ./pushups.db:/app/pushups.db:rw,z
+      - ./logs:/app/logs:rw,z
     environment:
       - REDIS_DSN=redis://redis:6379/0
 
