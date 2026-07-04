@@ -1,0 +1,4 @@
+aiogram[redis]==3.29.1
+apscheduler==4.3.2
+aiohttp==3.11.11
+python-dotenv==1.0.1

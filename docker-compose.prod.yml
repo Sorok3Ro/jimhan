@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  bot:
+    image: pushups-bot:latest
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./pushups.db:/app/pushups.db:rw
+      - ./bot.log:/app/bot.log:rw
+    environment:
+      - REDIS_DSN=redis://redis:6379/0
+      - HEALTH_HOST=0.0.0.0
+      - HEALTH_PORT=8080
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+      - /app/bot.log:size=64m
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  redis_data:
