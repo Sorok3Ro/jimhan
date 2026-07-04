@@ -30,6 +30,8 @@ services:
       - ./logs:/app/logs:rw,z
     environment:
       - REDIS_DSN=redis://redis:6379/0
+    ports:
+      - "127.0.0.1:8080:8080"
 
 volumes:
   redis_data:
