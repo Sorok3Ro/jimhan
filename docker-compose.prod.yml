@@ -30,7 +30,7 @@ services:
         condition: service_healthy
     volumes:
       - ./pushups.db:/app/pushups.db:rw
-      - ./bot.log:/app/bot.log:rw
+      - ./logs:/app/logs
     environment:
       - REDIS_DSN=redis://redis:6379/0
       - HEALTH_HOST=0.0.0.0

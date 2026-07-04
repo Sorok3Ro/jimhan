@@ -25,7 +25,8 @@ except ImportError:
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / 'pushups.db'
-LOG_PATH = BASE_DIR / 'bot.log'
+LOG_DIR = BASE_DIR / 'logs'
+LOG_PATH = LOG_DIR / 'bot.log'
 HEALTH_HOST = os.getenv('HEALTH_HOST', '0.0.0.0')
 HEALTH_PORT = int(os.getenv('HEALTH_PORT', '8080'))
 TZ = os.getenv('TZ', 'Europe/Moscow')
